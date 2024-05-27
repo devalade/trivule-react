@@ -1,70 +1,47 @@
-import '@picocss/pico'
-import {useEffect, useRef, useState} from "react";
+import { useEffect, useMemo } from "react";
+import PropTypes from "prop-types";
 import { TrivuleForm } from "trivule";
 
-/**
- *
- * @param props {{selector: string | HTMLFormElement; config: { realTime: boolean }  }}
- * @return {TrivuleForm}
- */
+// Creating a Trivule form instance
 function useTrivuleForm(props) {
-    const  { config = false, selector } = props;
-    const [tr, setTr] = useState()
+  const trivuleForm = useMemo(() => {
+    // Create a new instance of TrivuleForm with the provided configuration
+    const form = new TrivuleForm(props);
+    return form;
+  }, [props]);
 
-    useEffect(() => {
-        if (window !== undefined) {
-             setTr(() => new TrivuleForm(selector, {
-                realTime: config.realTime,
-            }));
-        }
-    }, []);
+  useEffect(() => {
+    // Bind the Trivule form to its HTML element as soon as the element is ready
+    trivuleForm.bind("form");
+  }, [trivuleForm]);
 
-    return tr;
+  return trivuleForm;
 }
 
-function TrivuleFromPage() {
-    const ref = useRef<HTMLFormElement>(null);
-
-    const form = useTrivuleForm({
-        selector: '#myForm',
-        config: { realTime: true },
-    });
-
-    function onSubmit(e) {
-        e.preventDefault();
-        console.log({ e });
+// The TrivuleFormComponent component
+function TrForm({ children, onSubmit, trFormConfig, aftertBinding }) {
+  const form = useTrivuleForm(trFormConfig);
+  form.afterBinding(aftertBinding);
+  const handleSubmit = (e) => {
+    // Prevent the default form submission if the form is valid
+    if (form.valid) {
+      e.preventDefault();
+      // Call the onSubmit callback provided by the parent component
+      if (onSubmit) {
+        onSubmit(form);
+      }
     }
+  };
 
-    return (
-        <>
-            <form onSubmit={onSubmit} id="myForm" className="form container-fluid">
-                <fieldset>
-                    <label className="label">Phone</label>
-                    <input type="text"  name="phone" />
-                    <small id="invalid-helper" data-tr-feedback="phone"></small>
-                </fieldset>
-                <fieldset>
-                    <label className="label">Date</label>
-                    <input
-                        type="date"
-                        data-tr-rules="required|date|after:now"
-                        name="date"
-                    />
-                    <div data-tr-feedback="date"></div>
-                </fieldset>
-                <fieldset>
-                    <label className="label">File</label>
-                    <input
-                        type="file"
-                        data-tr-rules="required|file|maxFileSize:1MB"
-                        name="file"
-                    />
-                    <div data-tr-feedback="file"></div>
-                </fieldset>
-                <p><button type="submit" data-tr-submit>Submit</button></p>
-            </form>
-        </>
-    )
+  return <form onSubmit={handleSubmit}>{children}</form>;
 }
 
-export default TrivuleFromPage
+// Define the prop types for TrivuleFormComponent
+TrForm.propTypes = {
+  children: PropTypes.node, // The child elements to be rendered inside the form
+  onSubmit: PropTypes.func, // The callback function to handle form submission
+  trFormConfig: PropTypes.any, // The configuration object for the Trivule form
+  aftertBinding: PropTypes.func,
+};
+
+export default TrForm;
