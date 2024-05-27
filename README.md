@@ -1,6 +1,7 @@
 # Trivule Integration in React + Vite
 
-This project demonstrates a minimal integration of [Trivule](https://github.com/trivule/trivule) and Trivule form in a React application using Vite. 
+This project demonstrates a minimal integration of [Trivule](https://github.com/trivule/trivule) and Trivule form in a React application using Vite.
+> Note: Trivule v1.3.0 
 
 ## Code Overview
 
