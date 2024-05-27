@@ -1,14 +1,12 @@
 import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
-import {TrivuleProvider} from "./trivule-provider.jsx";
-import TrivuleFromPage from "./trivule-form.jsx";
+import ReactDOM from 'react-dom/client' 
+import './index.css' 
+import ContactForm from './contact-form'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     {/*<TrivuleProvider>*/}
-      <TrivuleFromPage />
+      <ContactForm />
       {/*<App />*/}
     {/*</TrivuleProvider>*/}
   </React.StrictMode>,
