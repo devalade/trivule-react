@@ -1,7 +1,7 @@
-import { useEffect } from "react";
+import {PropsWithChildren, useEffect} from "react";
 import { Trivule } from 'trivule';
 
-export function TrivuleProvider({ children }) {
+export function TrivuleProvider({ children }: PropsWithChildren) {
      useEffect(() => {
             const tr = new Trivule();
             tr.init();

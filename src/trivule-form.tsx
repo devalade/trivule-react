@@ -19,6 +19,14 @@ function useTrivuleForm(props) {
 }
 
 // The TrivuleFormComponent component
+/**
+ *
+ * @param children {JSX.Element}
+ * @param onSubmit {any}
+ * @param trFormConfig {TrivuleForm}
+ * @param aftertBinding {Function}
+ * @return {JSX.Element}
+ */
 function TrForm({ children, onSubmit, trFormConfig, aftertBinding }) {
   const form = useTrivuleForm(trFormConfig);
   form.afterBinding(aftertBinding);
@@ -35,13 +43,5 @@ function TrForm({ children, onSubmit, trFormConfig, aftertBinding }) {
 
   return <form onSubmit={handleSubmit}>{children}</form>;
 }
-
-// Define the prop types for TrivuleFormComponent
-TrForm.propTypes = {
-  children: PropTypes.node, // The child elements to be rendered inside the form
-  onSubmit: PropTypes.func, // The callback function to handle form submission
-  trFormConfig: PropTypes.any, // The configuration object for the Trivule form
-  aftertBinding: PropTypes.func,
-};
 
 export default TrForm;

@@ -1,9 +1,10 @@
 import '@picocss/pico'
+import {FormEvent} from "react";
 
 
 function App() {
    
-    function onSubmit(e) {
+    function onSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         console.log({ e });
     }

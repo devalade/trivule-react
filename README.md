@@ -158,8 +158,8 @@ export default ContactForm;
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
+git clone https://github.com/devalade/trivule-react.git
+cd trivule-react
 ```
 
 2. Install dependencies:
@@ -174,4 +174,4 @@ npm install
 npm run dev
 ```
 
-4. Open your browser and navigate to `http://localhost:3000` to see the form in action.
+4. Open your browser and navigate to `http://localhost:5173` to see the form in action.
