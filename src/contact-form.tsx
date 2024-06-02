@@ -1,71 +1,69 @@
-import TrForm from "./trivule-form";
-function ContactForm() {
-  // This callback will be executed as soon as the form is ready.
-  const afterFormBound = (trivuleForm) => {
-    trivuleForm.make({
-      name: {
-        rules: "required|between:2,80|only:string",
-      },
-      email: {
-        rules: "required|email",
-      },
-      message: {
-        rules: "required|between:2,200|only:string",
-      },
-    });
+import {Input} from "./components/input.tsx";
+import {Label} from "./components/label.tsx";
+import {ErrorMessage} from "./components/error-message.tsx";
+import {Button} from "./components/button.tsx";
+import {Textarea} from "./components/textarea.tsx";
+import {useTrivuleForm} from "./hooks/use-trivule-form.tsx";
+import {FormEvent} from "react";
 
-    //Modifies e-mail validation, and forces to accept only gmail addresses
-    const email = trivuleForm.get("email");
-    if (email) {
-      email.appendRule({
+
+const schema = {
+  name: {
+    rules: "required|between:2,80|only:string",
+  },
+  email: {
+    rules: "required|email",
+  },
+  message: {
+    rules: "required|between:2,200|only:string",
+  },
+};
+
+function ContactForm() {
+
+  const form = useTrivuleForm({
+    schema,
+    appendRules: {
+      email: {
         rule: "endWith:@gmail.com",
-        message: "Only gmail addresses are accepted",
-      });
+        message: "Only gmail addresses are accepted"
+      }
     }
-  };
+  });
+   function  onSubmit(e: FormEvent<HTMLFormElement>){
+      if (form.valid) {
+        e.preventDefault();
+        // Send data to the server
+      }
+   }
+
   return (
-    <TrForm aftertBinding={afterFormBound}>
-      <h1>Form validation with Trivule, React+Vite</h1>
-      <div className="row">
-        <div className="col">
-          <div className="form-group">
-            <label htmlFor="name">Name</label>
-            <input type="text" id="name" name="name" />
-            <div className="alert alert-danger" role="alert">
-              <div className="triangle"></div>
-              <div data-tr-feedback="name"></div>
+      <div className="h-screen flex items-center justify-center bg-slate-900">
+
+        <form onSubmit={onSubmit} >
+          <h1 className="text-2xl font-semibold text-sky-100">Trivule validation</h1>
+          <div className="w-96 space-y-2">
+            <div className="sapce-y-1">
+              <Label name="name">Name</Label>
+              <Input name="name"/>
+              <ErrorMessage name="name"/>
             </div>
-          </div>
-        </div>
-        <div className="col">
-          <div className="form-group">
-            <label htmlFor="email">E-mail</label>
-            <input type="email" id="email" name="email" />
-            <div className="alert alert-danger" role="alert">
-              <div className="triangle"></div>
-              <div data-tr-feedback="email"></div>
+            <div className="sapce-y-1">
+              <Label name="email">Email</Label>
+              <Input name="email" type="email"/>
+              <ErrorMessage name="email"/>
             </div>
+            <div className="sapce-y-1">
+              <Label name="message">Message</Label>
+              <Textarea name="message" placeholder="Type your message here." />
+              <ErrorMessage name="message"/>
+            </div>
+            <Button type="submit">Submit</Button>
           </div>
-        </div>
+        </form>
+
       </div>
-      <div className="form-group">
-        <label htmlFor="message">Messages</label>
-        <textarea
-          id="message"
-          className="form-control"
-          name="message"
-        ></textarea>
-        <div className="alert alert-danger" role="alert">
-          <div className="triangle"></div>
-          <div data-tr-feedback="message"></div>
-        </div>
-      </div>
-      <p>
-        <button type="submit" value="Submit" data-tr-submit>
-          Submit
-        </button>
-      </p>
-    </TrForm>
   );
 }
+
 export default ContactForm;
